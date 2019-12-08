@@ -1,0 +1,29 @@
+version: '3.2'
+volumes:
+  data:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.100.87,nolock,soft,rw"
+      device: ":/mnt/data/bitwarden"
+services:
+   software:
+     image: mprasil/bitwarden
+     restart: unless-stopped
+     ports:
+       - 443:443
+       - 80:80
+       - 3012:3012
+     networks:
+       - swarm-net
+         #     labels:
+         # - "traefik.enable=true"
+         # - "traefik.frontend.rule=Host:bitwarden.leejonchapman.com"
+         #- "traefik.frontend.passHostHeader=true"
+         #- "traefik.frontend.headers.SSLRedirect=true"
+     volumes:
+       - data:/data
+     deploy:
+       replicas: 3
+networks:
+  swarm-net:
+    driver: overlay
