@@ -1,4 +1,4 @@
-version: '3.2'
+version: '3.5'
 volumes:
   data:
     driver_opts:
@@ -9,21 +9,18 @@ services:
    software:
      image: mprasil/bitwarden
      restart: unless-stopped
-     ports:
-       - 443:443
-       - 80:80
-       - 3012:3012
      networks:
-       - swarm-net
-         #     labels:
-         # - "traefik.enable=true"
-         # - "traefik.frontend.rule=Host:bitwarden.leejonchapman.com"
-         #- "traefik.frontend.passHostHeader=true"
-         #- "traefik.frontend.headers.SSLRedirect=true"
+       - internal_routeable
+     labels:
+       - "traefik.enable=true"
+       - "traefik.frontend.rule=Host:bitwarden1.leejonchapman.com"
+       - "traefik.frontend.passHostHeader=true"
+       - "traefik.frontend.headers.SSLRedirect=true"
      volumes:
        - data:/data
      deploy:
-       replicas: 3
+       replicas: 1
 networks:
-  swarm-net:
-    driver: overlay
+  internal_routeable:
+    name: internal_routeable
+    external: true
