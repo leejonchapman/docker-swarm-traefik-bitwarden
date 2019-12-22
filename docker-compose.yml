@@ -13,13 +13,15 @@ services:
        - internal_routeable
      labels:
        - "traefik.enable=true"
-       - "traefik.frontend.rule=Host:bitwarden1.leejonchapman.com"
+       - "traefik.frontend.rule=Host:bitwarden.leejonchapman.com"
        - "traefik.frontend.passHostHeader=true"
        - "traefik.frontend.headers.SSLRedirect=true"
+     environment: 
+       - "SIGNUPS_ALLOWED=false"
      volumes:
        - data:/data
      deploy:
-       replicas: 1
+       replicas: 3
 networks:
   internal_routeable:
     name: internal_routeable
