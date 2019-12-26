@@ -13,12 +13,12 @@ services:
      deploy: 
        labels:
          traefik.enable: "true"
-         traefik.backend: "biwarden"
+         traefik.backend: "bitwarden"
          traefik.docker.network: "internal"
-         traefik.frontend.rule: "Host:biwarden.leejonchapman.com"
+         traefik.frontend.rule: "Host:bitwarden.leejonchapman.com"
          traefik.web.port: "80"
          traefik.frontend.headers.SSLRedirect: "true"
-         traefik.frontend.headers.SSLHost: "biwarden.leejonchapman.com"
+         traefik.frontend.headers.SSLHost: "bitwarden.leejonchapman.com"
        mode: global
        placement:
          constraints:
