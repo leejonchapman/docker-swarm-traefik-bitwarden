@@ -8,25 +8,25 @@ volumes:
 services:
    software:
      image: mprasil/bitwarden
-     restart: unless-stopped
      networks:
        - internal
-     labels:
-       traefik.enable: "true"
-       traefik.frontend.rule: "Host:bitwarden.leejonchapman.com"
-       traefik.frontend.passHostHeader: "true"
-       traefik.frontend.headers.SSLRedirect: "true"
-       traefik.docker.network: internal
-       traefik.port: 80
-     environment: 
-       - "SIGNUPS_ALLOWED=false"
-     volumes:
-       - data:/data
-     deploy:
+     deploy: 
+       labels:
+         traefik.enable: "true"
+         traefik.backend: "biwarden"
+         traefik.docker.network: "internal"
+         traefik.frontend.rule: "Host:biwarden.leejonchapman.com"
+         traefik.web.port: "80"
+         traefik.frontend.headers.SSLRedirect: "true"
+         traefik.frontend.headers.SSLHost: "biwarden.leejonchapman.com"
        mode: global
        placement:
          constraints:
            - node.role == worker
+     environment: 
+       - "SIGNUPS_ALLOWED=false"
+     volumes:
+       - data:/data
 networks:
   internal:
     name: internal
