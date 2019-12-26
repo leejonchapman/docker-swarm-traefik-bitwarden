@@ -1,0 +1,33 @@
+version: '3.5'
+volumes:
+  data:
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.100.87,nolock,soft,rw"
+      device: ":/mnt/data/bitwarden"
+services:
+   software:
+     image: mprasil/bitwarden
+     restart: unless-stopped
+     networks:
+       - internal
+     labels:
+       traefik.enable: "true"
+       traefik.frontend.rule: "Host:bitwarden.leejonchapman.com"
+       traefik.frontend.passHostHeader: "true"
+       traefik.frontend.headers.SSLRedirect: "true"
+       traefik.docker.network: internal
+       traefik.port: 80
+     environment: 
+       - "SIGNUPS_ALLOWED=false"
+     volumes:
+       - data:/data
+     deploy:
+       mode: global
+       placement:
+         constraints:
+           - node.role == worker
+networks:
+  internal:
+    name: internal
+    external: true
