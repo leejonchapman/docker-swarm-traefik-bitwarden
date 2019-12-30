@@ -7,7 +7,7 @@ volumes:
       device: ":/mnt/data/bitwarden"
 services:
    software:
-     image: mprasil/bitwarden
+     image: bitwardenrs/server:latest
      networks:
        - internal
      deploy: 
@@ -19,7 +19,9 @@ services:
          traefik.web.port: "80"
          traefik.frontend.headers.SSLRedirect: "true"
          traefik.frontend.headers.SSLHost: "bitwarden.leejonchapman.com"
-       mode: global
+         traefik.backend.loadbalancer.stickiness: "true"
+       # sqllite DB doesnt scale and corrupts - do not scale - it will corrupt
+       replicas: 1
        placement:
          constraints:
            - node.role == worker
