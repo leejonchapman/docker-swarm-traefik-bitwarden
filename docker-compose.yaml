@@ -25,6 +25,9 @@ services:
        placement:
          constraints:
            - node.role == worker
+       restart_policy:
+         condition: any
+         max_attempts: 3
      environment: 
        - "SIGNUPS_ALLOWED=false"
      volumes:
